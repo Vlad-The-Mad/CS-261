@@ -48,6 +48,7 @@ int main(){
   /*Generate random IDs and scores for the n students, using rand().*/
   if (n == 0) {
     printf("There aren't any students. \n");
+    free (students);
     return 1;
   }
   int i;
