@@ -54,8 +54,13 @@ int isBalanced(char* s)
 				pushDynArr(stack,ch);
 			else
 			{
-
-                        /* FIXME: You will write this part of the function */
+            /* FIXME: You will write this part of the function */
+						if (ch == ')' && topDynArr(stack) == '(')
+						popDynArr(stack);
+						if (ch == ']' && topDynArr(stack) == '[')
+						popDynArr(stack);
+						if (ch == '}' && topDynArr(stack) == '{')
+						popDynArr(stack);
 
 			}
 
@@ -65,7 +70,10 @@ int isBalanced(char* s)
         /* Free the memory allocated to stack, and return b=1 or b=0 */
 
 	/* FIXME: You will write this part of the function */
-
+	if (isEmptyDynArr(stack) != 1)
+		b = 0;
+	deleteDynArr(stack);
+	return b;
 }
 
 int main(int argc, char* argv[]){

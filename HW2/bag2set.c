@@ -12,10 +12,15 @@
 */
 void bag2set(struct DynArr *da)
 {
-
-
-     /* FIX ME */
-
+  /* FIX ME */
+  int i = da->size;
+  while (i > 0) {
+    TYPE checkvalue = da->data[i];
+    if (containsDynArr(da, checkvalue) != -1 && containsDynArr(da, checkvalue) != i) {
+      removeDynArr(da, checkvalue);
+    }
+    i--;
+  }
 }
 
 
@@ -39,15 +44,13 @@ int main(int argc, char* argv[]){
         for (i=1;i<da1->size;i++){
           da1->data[i] = 2.2;
         }
-        /*removeAtDynArr(da1, 3);*/
+        da1->data[4] = 1.5;
         for (i=0;i<da1->size;i++){
           printf("%g  \n", da1->data[i]);
         }
           printf("\n");
-        printf("%d \n", containsDynArr(da1, 1.3));
-        for (i=0;i<da1->size;i++){
-          printf("%g  \n", da1->data[i]);
-        }
+          printf("set now \n");
+        bag2set(da1);
 
         printf("Bag:\n\n");
 	for (i=0;i<da.size;i++){

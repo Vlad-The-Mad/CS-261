@@ -283,11 +283,12 @@ void popDynArr(DynArr *v)
 int containsDynArr(DynArr *v, TYPE val)
 {
 	/* FIXME: You will write this function */
-	assert (v != NULL && v->size != 0);
-	int i;
-	for (i = 0; i < v->size; i++){
-		if (v->data[i] == val)
-			return i;
+	assert (v != 0 && v->size != 0);
+	int j = 0;
+	while (j < v->size) {
+		if (v->data[j] == val)
+		return j;
+		j++;
 	}
 		return -1;
 }
@@ -311,7 +312,6 @@ void removeDynArr(DynArr *v, TYPE val)
 		if (v->data[i] == val) {
 			removeAtDynArr(v, i);
 			i = v->size;
-			v->size = v->size - 1;
 		}
 	}
 }
