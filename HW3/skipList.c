@@ -160,12 +160,12 @@ struct skipLink* skipLinkAdd(struct skipLink * current, TYPE e) {
 
 /* FIX ME */
 assert (current != NULL);
+if (current->down != NULL) {
+	struct skipLink* temp = slideRightSkipList(current->down, e);
+	current->down = skipLinkAdd (temp, e);
+}
 struct skipLink* new = newSkipLink(e, current->next, current->down);
 current->next = new;
-printf("%f value within Add \n", current->next->value);
-printf("%p address of the pointer before the added one \n", (void*)&(current));
-printf("%p address of the current next \n", (void*)&(current->next));
-printf("%p address of the new \n", (void*)&(new));
 return new;
 }
 
@@ -197,16 +197,16 @@ void initSkipList (struct skipList *slst)
 
 	 /* FIX ME */
 	 assert(slst != NULL);
-	 struct skipLink* current = slst->topSentinel;
-	 while (current->down != NULL && current->next != NULL) {
-		 printf("value %f \n", current->next->value);
+	 struct skipLink* current = slst->topSentinel->next;
+	 do {
 		 current = slideRightSkipList(current, e);
-		 if (current->next->value == e) {
-		 return 1;
-	 }
+		 if (current->next != NULL && current->next->value == e) {
+			 return 1;
+		 }
 		 else
 		 current = current->down;
 	 }
+	 while (current != NULL && current->next != NULL);
 	 return 0;
  }
 
@@ -221,15 +221,14 @@ void initSkipList (struct skipList *slst)
 
 	 /* FIX ME */
 	 struct skipLink * check = slst->topSentinel;
-	 while(check->down != NULL) {
-		 slideRightSkipList(check, e);
-		 if (check->next->value == e) {
+	 while(check != NULL) {
+		 check = slideRightSkipList(check, e);
+		 if (check != NULL && check->next != NULL && check->next->value == e) {
 			 struct skipLink * temp = check->next;
 			 check->next = temp->next;
-			 check->down = temp->down;
 			 free(temp);
 		 }
-		 else if (check->down != NULL)
+		 else if (check != NULL)
 		 check = check->down;
 	 }
  }
@@ -245,19 +244,16 @@ void initSkipList (struct skipList *slst)
 
 		/* FIX ME */
 		assert(slst != NULL);
-		printf("%p address of the list's sentinel\n", (void*)&(slst->topSentinel));
-		printf("%p address of the sentinel's next\n", (void*)&(slst->topSentinel->next));
 		struct skipLink* current = slst->topSentinel;
-		while (current->down != NULL && current->next != NULL) {
+		do {
 			current = slideRightSkipList(current, e);
-			if (current->down != NULL)
-			current = current->down;
-		}
-		struct skipLink* temp = skipLinkAdd(current, e);
-		temp->value = e;
 		/* add to the higher lists*/
-		printf("%f value added\n", temp->value);
-		printf("%f sentinels next val\n\n", slst->topSentinel->next->value);
+			if (flipSkipLink() == 1 || current->down == NULL) {
+				struct skipLink* temp = skipLinkAdd(current, e);
+				temp->value = e;
+			}
+		}
+		while (current->down != NULL && current->next != NULL && flipSkipLink() != 1);
 		slst->size += 1;
 	}
 
@@ -281,9 +277,9 @@ int sizeSkipList(struct skipList *slst){
 
 		/* FIX ME*/
 		assert (slst != NULL && slst->size != 0);
-		struct skipLink* temp = slst->topSentinel;
-		struct skipLink* current = slst->topSentinel;
-		while (temp->down != NULL && temp != NULL) {
+		struct skipLink* temp = slst->topSentinel->next;
+		struct skipLink* current = slst->topSentinel->next;
+		while (temp != NULL) {
 			current = temp;
 			while (current != NULL) {
 				printf("%f \n", current->value);
@@ -306,7 +302,14 @@ void mergeSkipList(struct skipList *slst1, struct skipList *slst2)
 
 
 /* FIX ME */
+/*assert (slst1 != NULL && slst2 != NULL);
+while (slst2->topSentinel->next != NULL) {
+	TYPE search_val = slst2->topSentinel->next->value;
+	if (containsSkipList(slst1, search_val)) {
 
+	}
+	removeSkipList(slst2->topSentinel->next->value);*/
+}
 
 } /* end of the function */
 
