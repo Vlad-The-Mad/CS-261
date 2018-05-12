@@ -299,19 +299,21 @@ int sizeSkipList(struct skipList *slst){
  post: slst1 points to the merger,  slst2 is null*/
 void mergeSkipList(struct skipList *slst1, struct skipList *slst2)
 {
+	/* FIX ME */
+	assert (slst1 != NULL
+		&& slst2 != NULL
+		&& slst1->size != 0
+		&& slst2->size != 0);
 
+		while (slst2->topSentinel->next != NULL) {
+			TYPE search_val = slst2->topSentinel->next->value;
+			if (containsSkipList(slst1, search_val) != 1) {
+				addSkipList(slst1, search_val);
+			}
+			removeSkipList(slst2, slst2->topSentinel->next->value);
+		}
 
-/* FIX ME */
-/*assert (slst1 != NULL && slst2 != NULL);
-while (slst2->topSentinel->next != NULL) {
-	TYPE search_val = slst2->topSentinel->next->value;
-	if (containsSkipList(slst1, search_val)) {
-
-	}
-	removeSkipList(slst2->topSentinel->next->value);*/
-}
-
-} /* end of the function */
+	} /* end of the function */
 
 
 
@@ -323,9 +325,20 @@ while (slst2->topSentinel->next != NULL) {
    post: slst1 points to the merger skip list*/
 void diffSkipList(struct skipList *slst1, struct skipList *slst2)
 {
-
-
 /* FIX ME */
-
+	assert (slst1 != NULL
+		&& slst2 != NULL
+		&& slst1->size != 0
+		&& slst2->size != 0);
+		struct skipLink* temp = slst2->topSentinel->next;
+		while (temp-> down != NULL)
+			temp = temp->down;
+		while (temp != NULL) {
+			TYPE search_val = temp->value;
+			if (containsSkipList(slst2, search_val) == 1) {
+				removeSkipList(slst1, search_val);
+			}
+			temp = temp->next;
+		}
 
 } /* end of the function */
